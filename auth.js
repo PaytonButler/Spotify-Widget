@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const crypto = require('crypto');
 const http = require('http');
 const { shell } = require('electron');
@@ -5,10 +7,9 @@ const fetch = require('node-fetch');
 const Store = require('electron-store');
 
 const store = new Store();
-const CLIENT_ID = '448240ff6a9943dc9abb5d2e58e5b932';
+const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const REDIRECT_URI = 'http://127.0.0.1:8888/callback';
 const SCOPES = 'user-read-currently-playing user-read-playback-state user-modify-playback-state';
-
 function base64url(buffer) {
   return buffer.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
