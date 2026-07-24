@@ -14,7 +14,31 @@ body {
   border-radius: 16px;
   padding: 20px;
   text-align: center;
-  width: 260px;
+  width: 300px;
+  /* widened slightly to fit the volume rail */
+  position: relative;
+  /* anchors .close-btn's absolute positioning */
+  -webkit-app-region: drag;
+  /* lets you click-and-drag the whole widget */
+}
+
+.widget-body {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.volume-rail {
+  width: 24px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-app-region: no-drag;
+}
+
+.main-content {
+  flex: 1;
 }
 
 .vinyl {
@@ -58,8 +82,15 @@ body {
 }
 
 #trackName {
-  font-weight: 600;
-  font-size: 14px;
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+#trackName:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 #artistName {
@@ -76,26 +107,52 @@ body {
   cursor: pointer;
 }
 
-#app {
-  -webkit-app-region: drag;
-  /* lets you click-and-drag the whole widget */
-}
-
-.controls,
-.close-btn {
+.controls {
   -webkit-app-region: no-drag;
   /* buttons still need to be clickable */
 }
 
-.close-btn {
+.window-controls {
   position: absolute;
   top: 8px;
   right: 12px;
+  display: flex;
+  gap: 10px;
+  -webkit-app-region: no-drag;
+}
+
+.min-btn,
+.close-btn {
   cursor: pointer;
   opacity: 0.6;
   font-size: 14px;
 }
 
+.min-btn:hover,
 .close-btn:hover {
   opacity: 1;
+}
+
+/* Rotate a normal horizontal <input type="range"> into a vertical slider */
+#volumeSlider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 180px;
+  /* becomes the visual HEIGHT after rotation */
+  height: 4px;
+  border-radius: 2px;
+  background: #444;
+  outline: none;
+  transform: rotate(-90deg);
+  cursor: pointer;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #1DB954;
+  /* Spotify green */
+  cursor: pointer;
 }

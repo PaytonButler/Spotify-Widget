@@ -28,5 +28,6 @@ ipcMain.handle('spotify:login', async () => {
 
 ipcMain.handle('spotify:getToken', async () => auth.getValidAccessToken());
 ipcMain.handle('spotify:quit', () => app.quit());
+ipcMain.handle('spotify:minimize', () => win.minimize());
 
 app.on('window-all-closed', () => app.quit());
