@@ -1,3 +1,8 @@
+html,
+body {
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   background: transparent;
@@ -15,25 +20,25 @@ body {
   padding: 20px;
   text-align: center;
   width: 300px;
-  /* widened slightly to fit the volume rail */
   position: relative;
-  /* anchors .close-btn's absolute positioning */
   -webkit-app-region: drag;
-  /* lets you click-and-drag the whole widget */
 }
 
-.widget-body {
+.top-row {
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 12px;
 }
 
 .volume-rail {
   width: 24px;
-  height: 200px;
+  height: 180px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 10px 0;
   -webkit-app-region: no-drag;
 }
 
@@ -52,7 +57,6 @@ body {
   justify-content: center;
   animation: spin 3s linear infinite;
   animation-play-state: paused;
-  /* toggled from JS based on playback state */
 }
 
 .vinyl.playing {
@@ -107,9 +111,9 @@ body {
   cursor: pointer;
 }
 
-.controls {
+.controls,
+.track-info {
   -webkit-app-region: no-drag;
-  /* buttons still need to be clickable */
 }
 
 .window-controls {
@@ -133,17 +137,12 @@ body {
   opacity: 1;
 }
 
-/* Rotate a normal horizontal <input type="range"> into a vertical slider */
 #volumeSlider {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 180px;
-  /* becomes the visual HEIGHT after rotation */
-  height: 4px;
-  border-radius: 2px;
+  -webkit-appearance: slider-vertical;
+  width: 4px;
+  height: 140px;
   background: #444;
   outline: none;
-  transform: rotate(-90deg);
   cursor: pointer;
 }
 
@@ -153,6 +152,20 @@ body {
   height: 12px;
   border-radius: 50%;
   background: #1DB954;
-  /* Spotify green */
   cursor: pointer;
+}
+
+.heart-btn {
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  display: flex;
+  align-items: center;
+}
+
+.heart-btn svg {
+  transition: transform 0.15s ease;
+}
+
+.heart-btn:hover svg {
+  transform: scale(1.1);
 }

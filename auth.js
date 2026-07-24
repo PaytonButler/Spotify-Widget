@@ -9,7 +9,8 @@ const Store = require('electron-store');
 const store = new Store();
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const REDIRECT_URI = 'http://127.0.0.1:8888/callback';
-const SCOPES = 'user-read-currently-playing user-read-playback-state user-modify-playback-state';
+const SCOPES = 'user-read-currently-playing user-read-playback-state user-modify-playback-state user-library-modify user-library-read';
+
 function base64url(buffer) {
   return buffer.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
@@ -20,14 +21,14 @@ function generatePKCE() {
   return { verifier, challenge };
 }
 
-// Kicks off login: opens system browser, spins up a tiny local server to catch the redirect
 function login() {
   return new Promise((resolve, reject) => {
     const { verifier, challenge } = generatePKCE();
 
     const authUrl = `https://accounts.spotify.com/authorize?` +
       `client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
-      `&code_challenge_method=S256&code_challenge=${challenge}&scope=${encodeURIComponent(SCOPES)}`;
+      `&code_challenge_method=S256&code_challenge=${challenge}&scope=${encodeURIComponent(SCOPES)}` +
+      `&show_dialog=true`;
 
     const server = http.createServer(async (req, res) => {
       const url = new URL(req.url, REDIRECT_URI);
@@ -67,7 +68,9 @@ async function exchangeCode(code, verifier) {
     body,
   });
   if (!res.ok) throw new Error('Token exchange failed');
-  return res.json();
+  const tokens = await res.json();
+  console.log('Granted scopes:', tokens.scope);
+  return tokens;
 }
 
 async function refreshAccessToken() {
@@ -94,7 +97,6 @@ async function refreshAccessToken() {
   return tokens.access_token;
 }
 
-// Always call this before hitting the Web API — refreshes only if needed
 async function getValidAccessToken() {
   const expiresAt = store.get('expires_at', 0);
   if (Date.now() < expiresAt - 30000) return store.get('access_token');
