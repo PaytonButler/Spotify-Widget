@@ -94,7 +94,7 @@ async function refreshAccessToken() {
   return tokens.access_token;
 }
 
-// Always call this before hitting the Web API — refreshes only if needed
+// Always call this before hitting the Web API, refreshes only if needed
 async function getValidAccessToken() {
   const expiresAt = store.get('expires_at', 0);
   if (Date.now() < expiresAt - 30000) return store.get('access_token');
